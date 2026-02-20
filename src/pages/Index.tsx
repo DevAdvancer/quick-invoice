@@ -1,13 +1,18 @@
 import { useInvoiceStore } from "@/hooks/useInvoiceStore";
 import InvoiceForm from "@/components/InvoiceForm";
 import InvoicePreview from "@/components/InvoicePreview";
+import DraftSidebar from "@/components/DraftSidebar";
 import { Button } from "@/components/ui/button";
 import { Download, RotateCcw, FileText } from "lucide-react";
 import { exportToPdf } from "@/lib/pdfExport";
 import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 const Index = () => {
-  const { invoice, updateInvoice, signature, setSignature, resetInvoice } = useInvoiceStore();
+  const {
+    invoice, updateInvoice, signature, setSignature, resetInvoice,
+    drafts, activeDraftId, addDraft, deleteDraft, renameDraft, switchDraft,
+  } = useInvoiceStore();
   const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
@@ -41,7 +46,16 @@ const Index = () => {
       {/* Split Layout */}
       <div className="flex flex-col lg:flex-row">
         {/* Form */}
-        <div className="w-full lg:w-[420px] xl:w-[480px] shrink-0 p-6 overflow-y-auto lg:h-[calc(100vh-57px)] lg:border-r">
+        <div className="w-full lg:w-[420px] xl:w-[480px] shrink-0 p-6 overflow-y-auto lg:h-[calc(100vh-57px)] lg:border-r space-y-6">
+          <DraftSidebar
+            drafts={drafts}
+            activeDraftId={activeDraftId}
+            onSwitch={switchDraft}
+            onAdd={addDraft}
+            onDelete={deleteDraft}
+            onRename={renameDraft}
+          />
+          <Separator />
           <InvoiceForm
             invoice={invoice}
             onChange={updateInvoice}

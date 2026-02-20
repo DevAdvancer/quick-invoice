@@ -1,8 +1,9 @@
-import { InvoiceData, LineItem } from "@/types/invoice";
+import { InvoiceData, LineItem, currencies } from "@/types/invoice";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2, Upload, X } from "lucide-react";
 import React, { useRef } from "react";
 
@@ -160,7 +161,18 @@ export default function InvoiceForm({ invoice, onChange, signature, onSignatureC
         <div className="grid grid-cols-3 gap-3">
           <div>
             <Label htmlFor="currency">Currency</Label>
-            <Input id="currency" value={invoice.currency} onChange={(e) => onChange({ currency: e.target.value })} placeholder="$" />
+            <Select value={invoice.currency} onValueChange={(val) => onChange({ currency: val })}>
+              <SelectTrigger id="currency">
+                <SelectValue placeholder="Select currency" />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((c) => (
+                  <SelectItem key={c.code} value={c.code}>
+                    {c.symbol} {c.code}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label htmlFor="taxRate">Tax (%)</Label>
