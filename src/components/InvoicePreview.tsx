@@ -1,4 +1,4 @@
-import { InvoiceData } from "@/types/invoice";
+import { InvoiceData, getCurrencySymbol } from "@/types/invoice";
 import { useMemo } from "react";
 
 interface Props {
@@ -15,7 +15,7 @@ export default function InvoicePreview({ invoice, signature }: Props) {
     return { subtotal: sub, discount: disc, tax: t, total: afterDiscount + t };
   }, [invoice]);
 
-  const cur = invoice.currency || "$";
+  const cur = getCurrencySymbol(invoice.currency);
 
   return (
     <div
